@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_australia/manu.dart';
+import 'package:flame_audio/flame_audio.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,6 +26,7 @@ class MyHomePage extends StatefulWidget {
   const MyHomePage({
     super.key,
   });
+
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -36,12 +38,14 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Center(
-            child: Text(
-          "Australia",
-          style: TextStyle(
+          child: Text(
+            "Australia",
+            style: TextStyle(
               color: Color.fromARGB(223, 238, 31, 3),
-              fontWeight: FontWeight.bold),
-        )),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
       ),
       body: Stack(
         children: [
@@ -58,15 +62,21 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Page2()));
-                  },
-                  child: const Text(
-                    'Welcome To',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                  ),
-                ),
+  onPressed: () async {
+    try {
+      await FlameAudio.bgm.play('sound.mp3');
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Page2()));
+    } catch (e) {
+      // Handle any errors that may occur during audio playback
+      print('Error playing audio: $e');
+    }
+  },
+  child: const Text(
+    'Welcome To',
+    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+  ),
+),
+
               ],
             ),
           ),
